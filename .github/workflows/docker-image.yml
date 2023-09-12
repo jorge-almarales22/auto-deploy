@@ -31,7 +31,6 @@ jobs:
         env:
           DOCKER_USERNAME: ${{  secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
           echo "INICIANDO LOGIN"
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
@@ -39,7 +38,15 @@ jobs:
           echo "Nueva version $NEW_VERSION"
           
       - name: Build the Docker image
-        run: docker build -t jeada22/auto-deploy:2.0.0 .
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build -t jeada22/auto-deploy:$NEW_VERSION .
+          docker build -t jeada22/auto-deploy:latest .
           
       - name: Push the Docker image
-        run: docker push jeada22/auto-deploy:2.0.0
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker push jeada22/auto-deploy:$NEW_VERSION
+          docker push jeada22/auto-deploy:latest
