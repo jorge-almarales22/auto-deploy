@@ -27,33 +27,33 @@ jobs:
         id: version
             
 
-      # - name: DockerHub login
-      #   env:
-      #     DOCKER_USERNAME: ${{  secrets.DOCKER_USERNAME }}
-      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #   run: |
-      #     echo "INICIANDO LOGIN"
-      #     docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      #     echo "FIN DEL LOGIN"
-      #     echo "Nueva version $NEW_VERSION"
+      - name: DockerHub login
+        env:
+          DOCKER_USERNAME: ${{  secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "INICIANDO LOGIN"
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo "FIN DEL LOGIN"
+          echo "Nueva version $NEW_VERSION"
           
-      # - name: Build the Docker image
-      #   env:
-      #     NEW_VERSION: ${{ steps.version.outputs.version }}
-      #   run: |
-      #     docker build -t jeada22/auto-deploy:$NEW_VERSION .
-      #     docker build -t jeada22/auto-deploy:latest .
+      - name: Build the Docker image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build -t jeada22/auto-deploy:$NEW_VERSION .
+          docker build -t jeada22/auto-deploy:latest .
           
-      # - name: Push the Docker image
-      #   env:
-      #     NEW_VERSION: ${{ steps.version.outputs.version }}
-      #   run: |
-      #     docker push jeada22/auto-deploy:$NEW_VERSION
-      #     docker push jeada22/auto-deploy:latest
+      - name: Push the Docker image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker push jeada22/auto-deploy:$NEW_VERSION
+          docker push jeada22/auto-deploy:latest
           
-      - name: Loguearse en Docker Registry
+      - name: Login to Digital Ocean Registry
         run: echo "${{ secrets.DOCKER_REGISTRY_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_REGISTRY_USERNAME }}" --password-stdin registry.digitalocean.com
 
-      # - name: Construir y subir la imagen Docker
-      #   run: |
-      #     docker build -t registry.digitalocean.com/auto-deploy-test/jeada22/auto-deploy --push .
+      - name: build and push the Docker image to Digital Ocean
+        run: |
+          docker build -t registry.digitalocean.com/auto-deploy-test/jeada22/auto-deploy --push .
