@@ -2,7 +2,7 @@ import express from "express"
 const app = express()
 
 app.get('/', function (req, res) {
-  res.send('Hello World')
+  res.json({"message": "Hello World"})
 })
 
-app.listen(3000)
+app.listen(4000)
