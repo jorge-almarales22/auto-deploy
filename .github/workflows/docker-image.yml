@@ -38,8 +38,8 @@ jobs:
           echo "FIN DEL LOGIN"
           echo "Nueva version $NEW_VERSION"
           
-      # - name: Build the Docker image
-      #   run: docker build -t jeada22/auto-deploy:2.0.0 .
+      - name: Build the Docker image
+        run: docker build -t jeada22/auto-deploy:2.0.0 .
           
-      # - name: Push the Docker image
-      #   run: docker push jeada22/auto-deploy:2.0.0
+      - name: Push the Docker image
+        run: docker push jeada22/auto-deploy:2.0.0
