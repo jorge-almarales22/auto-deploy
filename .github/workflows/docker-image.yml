@@ -26,6 +26,9 @@ jobs:
           echo "INICIANDO LOGIN"
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           echo "FIN DEL LOGIN"
-    # - uses: actions/checkout@v3
-    # - name: Build the Docker image
-    #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+          
+      - name: Build the Docker image
+        run: docker build -t jeada22/auto-deploy:2.0.0 .
+          
+      - name: Push the Docker image
+        run: docker push jeada22/auto-deploy:2.0.0
